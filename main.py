@@ -1,8 +1,8 @@
 """Single entry point of the repository: python main.py
 
-The site is written by hand (index.html), so there is nothing to build. The one
+The site is written by hand (docs/index.html), so there is nothing to build. The one
 step, `check`, tests what a reader would notice if it broke: every local file the
-page points to exists, nothing is loaded from another server, the English and the
+page points to exists, `docs/.nojekyll` is there, nothing is loaded from another server, the English and the
 German half link to the same places, and the links to AMT.engine and AMT.runner
 are there. Standard library only; it needs no network and writes no file.
 
@@ -16,8 +16,10 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-PAGE = ROOT / "index.html"
-CSS = ROOT / "assets" / "site.css"
+# GitHub Pages serves the folder docs/ (as for amt-engine); everything else is the repository around it
+SITE = ROOT / "docs"
+PAGE = SITE / "index.html"
+CSS = SITE / "assets" / "site.css"
 
 REQUIRED = [
     "https://n4o-rse.github.io/amt-engine/",
@@ -70,27 +72,29 @@ def check():
     page.feed(PAGE.read_text(encoding="utf-8"))
 
     for ref in sorted(set(page.local)):
-        if not (ROOT / ref.split("#")[0]).exists():
-            problems.append(f"index.html: missing local file {ref}")
+        if not (SITE / ref.split("#")[0]).exists():
+            problems.append(f"docs/index.html: missing local file {ref}")
     for ref in page.loaded_remote:
-        problems.append(f"index.html: loads {ref} from another server")
+        problems.append(f"docs/index.html: loads {ref} from another server")
     dup = {i for i in page.ids if page.ids.count(i) > 1}
     for i in sorted(dup):
-        problems.append(f"index.html: id '{i}' is used more than once")
+        problems.append(f"docs/index.html: id '{i}' is used more than once")
 
     if page.anchors["en"] != page.anchors["de"]:
         only = page.anchors["en"] ^ page.anchors["de"]
-        problems.append("index.html: English and German link to different places: " + ", ".join(sorted(only)))
+        problems.append("docs/index.html: English and German link to different places: " + ", ".join(sorted(only)))
     for url in REQUIRED:
         if url not in page.anchors["all"]:
-            problems.append(f"index.html: no link to {url}")
+            problems.append(f"docs/index.html: no link to {url}")
+    if not (SITE / ".nojekyll").exists():
+        problems.append("docs/.nojekyll is missing: GitHub Pages would run Jekyll on the folder")
 
     css = CSS.read_text(encoding="utf-8")
     for ref in sorted(set(re.findall(r'url\("([^"]+)"\)', css))):
         if not (CSS.parent / ref).resolve().exists():
-            problems.append(f"assets/site.css: missing file {ref}")
+            problems.append(f"docs/assets/site.css: missing file {ref}")
         if re.match(r"(https?:)?//", ref):
-            problems.append(f"assets/site.css: loads {ref} from another server")
+            problems.append(f"docs/assets/site.css: loads {ref} from another server")
 
     print(f"links: {len(page.anchors['all'])} external, {len(set(page.local))} local")
     return problems

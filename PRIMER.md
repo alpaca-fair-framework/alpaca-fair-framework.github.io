@@ -10,16 +10,17 @@ Arbeitsplan für die Landing Page des Alpaca FAIR Frameworks (`alpaca-fair-frame
 
 | Was | Wo | Rolle |
 |---|---|---|
-| Startseite | `index.html` | eine Seite, Englisch und Deutsch in einer Datei, Umschalter oben rechts |
-| Gestaltung | `assets/site.css`, `assets/palette.css`, `assets/site.js` | Kopie aus `n4o-rse/amt-engine` (`docs/assets/`), siehe Befunde |
-| Bilder | `assets/img/` | Alpaka, Pinguin (AMT), Alligator; Logos in `assets/img/logos/` |
-| Schrift | `vendor/roboto/` | Roboto, lokal, SIL OFL 1.1; es wird nichts von einem Fontserver geladen |
-| Prüfung | `main.py` | Schritt `check`: Links, Dateien, Sprachparität, nichts von fremden Servern |
+| Startseite | `docs/index.html` | eine Seite, Englisch und Deutsch in einer Datei, Umschalter oben rechts |
+| Gestaltung | `docs/assets/site.css`, `palette.css`, `site.js` | Kopie aus `n4o-rse/amt-engine` (`docs/assets/`), siehe Befunde |
+| Bilder | `docs/assets/img/` | Alpaka, Pinguin (AMT), Alligator; Logos in `docs/assets/img/logos/` |
+| Schrift | `docs/vendor/roboto/` | Roboto, lokal, SIL OFL 1.1; es wird nichts von einem Fontserver geladen |
+| Prüfung | `main.py` | Schritt `check`: Links, Dateien, `docs/.nojekyll`, Sprachparität, nichts von fremden Servern |
 | Schwesterseite | `https://n4o-rse.github.io/amt-engine/` | Vorbild für Layout und Abschnitt „Teil einer Familie“ |
 
 **Befunde** (alle am 2026-10-29 geprüft):
 
 - Das Repo war leer (`git clone` meldete „empty repository“). Der erste Patch ist deshalb der ganze Baum.
+- Der erste Pages-Lauf (2026-10-29, Commit `1da39c3`) schlug im Job `build` fehl. Pages war auf `main` / `/docs` gestellt, wie bei `amt-engine`, aber der Baum lag im Root; `docs/` gab es nicht. Der Fehlertext selbst stand hinter „Show more“ und wurde nicht geprüft, die Ursache ist die wahrscheinlichste, nicht belegt. Behoben in S1b.
 - Die AMT-Seite (`amt-engine`, Stand 0.5.0) besteht aus `docs/index.html` plus `assets/site.css`, `palette.css`, `site.js`. `palette.css` ist dort aus `design/palette.yaml` **erzeugt** („Do not edit“). Hier liegt eine unveränderte Kopie; die Farben ändern sich also nur, wenn man sie in `amt-engine` ändert und neu kopiert (siehe D2).
 - `site.css` ist bis auf einen angehängten Block am Ende (verlinkte Familien-Figuren, Karten) unverändert. `site.js` unterscheidet sich nur in den beiden Speicherschlüsseln (`alpaca-theme`, `alpaca-lang`), damit Hell/Dunkel und Sprache nicht mit der AMT-Seite kollidieren.
 - Der Abschnitt „Part of a family“ der AMT-Seite verlinkt weder Alpaka noch Alligator; der PRIMER von `amt-engine` (D10) hält fest, dass das bewusst so ist, weil beide in Überarbeitung sind. Für den Alligator gibt es deshalb noch keine URL.
@@ -29,9 +30,9 @@ Arbeitsplan für die Landing Page des Alpaca FAIR Frameworks (`alpaca-fair-frame
 ### A2 Zielbild
 
 ```
-amt-engine/docs/assets  ──(Kopie)──►  assets/  ─┐
-                                                 ├─►  index.html  ──►  GitHub Pages
-LEIZA / N4O-Logos, Roboto  ──(Kopie)──►  img/ ──┘      (main, Wurzel)
+amt-engine/docs/assets  ──(Kopie)──►  docs/assets/  ─┐
+                                                      ├─►  docs/index.html  ──►  GitHub Pages
+LEIZA / N4O-Logos, Roboto  ──(Kopie)──►  docs/…  ─────┘      (main, /docs)
 ```
 
 Eigenschaften der fertigen Seite, jede prüfbar:
@@ -63,6 +64,7 @@ Eigenschaften der fertigen Seite, jede prüfbar:
 | Fußzeile mit LEIZA, NFDI4Objects, NFDI, DFG und Förderhinweis | von AMT übernommen | Vorschlag |
 | Beschreibungstexte (Tagline, Lead, „Where it comes from“) | Entwurf, kurz gehalten | Vorschlag |
 | Alligator | Karte „in Vorbereitung“ ohne Link, bis es ein Ziel gibt | 2026-10-29 |
+| Ort der Seite | Ordner `docs/`, Pages-Quelle `main` / `/docs` (wie `amt-engine`) | 2026-10-29 |
 | Build-Werkzeug | keins; handgeschriebenes HTML, `main.py` nur mit dem Schritt `check` | 2026-10-29 |
 | Lizenz | MIT, wie die Schwester-Repos | 2026-10-29 |
 
@@ -84,7 +86,8 @@ Zusätzlich `PRIMER.md` einzeln, damit klar ist, welche Fassung gilt.
 |---|---|---|---|---|
 | S0 | Festlegungen (Aufbau, Name, Sprache) | alpaca-fair-framework.github.io | – | erledigt 2026-10-29 |
 | S1 | Landing Page mit Skeleton, Familien-Abschnitt und Links zu AMT.engine/AMT.runner | alpaca-fair-framework.github.io | S0 | erledigt 2026-10-29 |
-| S2 | GitHub Pages einschalten und die Live-Seite ansehen | alpaca-fair-framework.github.io | S1 | offen |
+| S1b | Seite nach `docs/` verschieben (Pages-Quelle `/docs`) | alpaca-fair-framework.github.io | S1 | erledigt 2026-10-29 |
+| S2 | GitHub Pages prüfen und die Live-Seite ansehen | alpaca-fair-framework.github.io | S1 | offen |
 | S3 | Alligator verlinken | alpaca-fair-framework.github.io | Ziel für Alligator | offen |
 | S4 | Wortlaut und Ausbau der Familie (Beschreibung, weitere Mitglieder) | alpaca-fair-framework.github.io | S1 | offen |
 
@@ -100,7 +103,7 @@ S3 und S4 sind voneinander unabhängig. S2 ist ein Klick im Repo, kein Code, und
 
 **Uploads:** keine (Repo war leer).
 
-Umgesetzt: `index.html` (Kopf mit Alpaka, Navigation Home / AMT.engine / AMT.runner / GitHub, Hero, „Part of a family“, „Tools“, „Where it comes from“, Fuß mit Logos), `assets/`, `vendor/roboto/`, `main.py` (Schritt `check`), `README.md`, `LICENSE`, `CITATION.cff`, `CHANGELOG.md`, `.gitignore`, `.nojekyll`.
+Umgesetzt: `docs/index.html` (Kopf mit Alpaka, Navigation Home / AMT.engine / AMT.runner / GitHub, Hero, „Part of a family“, „Tools“, „Where it comes from“, Fuß mit Logos), `docs/assets/`, `docs/vendor/roboto/`, `main.py` (Schritt `check`), `README.md`, `LICENSE`, `CITATION.cff`, `CHANGELOG.md`, `.gitignore`, `docs/.nojekyll`.
 
 **Abnahme:** `python main.py` meldet `[check] ok`; ein zweiter Lauf meldet dasselbe, `git status` bleibt sauber; die Seite im Browser öffnen und prüfen: Familie sichtbar, Pinguin führt zur AMT-Website, die Karten führen zu Website, Quellcode und DOI von AMT.engine bzw. zum Quellcode von AMT.runner, der Alligator ist als „in Vorbereitung“ erkennbar, Sprachumschalter und Hell/Dunkel funktionieren.
 
@@ -108,11 +111,21 @@ Umgesetzt: `index.html` (Kopf mit Alpaka, Navigation Home / AMT.engine / AMT.run
 
 Alles umgesetzt wie oben beschrieben. Anker wie `#tools` gibt es bewusst nicht: Englisch und Deutsch liegen als zwei Blöcke in einer Datei, von denen CSS einen ausblendet, und doppelte IDs wären ungültig und würden im ausgeblendeten Block nicht scrollen. Die Navigation verlinkt deshalb direkt auf die Ziele. Die Seite wurde in einem Headless-Chromium gerendert und angesehen (Englisch hell, Deutsch dunkel, schmal wie ein Telefon); Layout wie bei AMT. Die Klicks auf die externen Links wurden nicht ausgeführt, die Ziele nur gegen die Quell-Repos abgeglichen (S2 prüft sie live).
 
-## S2 — GitHub Pages einschalten
+## S1b — Seite nach docs/ verschieben
+
+**Ziel:** Die Seite liegt in `docs/`, passend zur Pages-Quelle `main` / `/docs`.
+
+**Abnahme:** `python main.py` meldet `[check] ok` (prüft auch `docs/.nojekyll`); im Root liegen `index.html`, `assets/` und `vendor/` nicht mehr; der Pages-Lauf wird grün.
+
+### Erledigt 2026-10-29
+
+Mit `git mv` verschoben (Verlauf bleibt), `main.py` auf `docs/` umgestellt, README und CHANGELOG angepasst. `main.py` prüft nun zusätzlich `docs/.nojekyll`.
+
+## S2 — GitHub Pages prüfen
 
 **Ziel:** `https://alpaca-fair-framework.github.io/` liefert die Seite.
 
-**Abnahme:** Im Repo unter Settings → Pages als Quelle „Deploy from a branch“, Branch `main`, Ordner `/ (root)`; nach dem Lauf des Pages-Workflows die Seite aufrufen und Schritt S1 (Abnahme) auf der Live-Seite wiederholen.
+**Abnahme:** Im Repo unter Settings → Pages als Quelle „Deploy from a branch“, Branch `main`, Ordner `/docs`; nach dem Lauf des Pages-Workflows die Seite aufrufen und Schritt S1 (Abnahme) auf der Live-Seite wiederholen.
 
 ## S3 — Alligator verlinken
 

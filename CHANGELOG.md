@@ -8,6 +8,22 @@ is the one shown in the footer of the page (`site 0.1.0`).
 
 ## [Unreleased]
 
+### Changed
+
+- The site moves into `docs/` (`index.html`, `assets/`, `vendor/`, `.nojekyll`), as in
+  `amt-engine`. GitHub Pages deploys the branch `main`, folder `/docs`. `main.py`, the
+  README and the PRIMER follow.
+
+### Fixed
+
+- The first Pages run failed because the folder `docs/` that Pages builds from did not
+  exist: the 0.1.0 commit had the site in the repository root.
+
+### Added
+
+- `main.py check` also fails when `docs/.nojekyll` is missing, since without it GitHub
+  Pages runs Jekyll on the folder.
+
 ## [0.1.0] - 2026-10-29
 
 First version of the site: a single, bilingual (English and German) landing page
