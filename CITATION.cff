@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this website, please cite the software it describes; see the links on the page."
+title: "Alpaca FAIR Framework: website"
+abstract: >-
+  Landing page of the Alpaca FAIR Framework. It introduces the family of tools
+  and links to AMT.engine and AMT.runner.
+type: software
+authors:
+  - family-names: Thiery
+    given-names: Florian
+    orcid: "https://orcid.org/0000-0002-3246-3531"
+    affiliation: "Leibniz-Zentrum für Archäologie (LEIZA)"
+license: MIT
+version: "0.1.0"
+date-released: "2026-10-29"
+repository-code: "https://github.com/alpaca-fair-framework/alpaca-fair-framework.github.io"
+url: "https://alpaca-fair-framework.github.io/"
